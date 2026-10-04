@@ -7,11 +7,10 @@
       "headings": {
         "about-us": "About Us",
         "project-team": "Project team",
-        "john-doe": "John Doe",
-        "jane-doe": "Jane Doe",
-        "johnny-doe": "Johnny Doe",
-        "jean-doe": "Jean Doe",
-        "james-doe": "James Doe"
+        "panneer-selvam-s-o-rajamanickam": "Panneer Selvam S/O Rajamanickam",
+        "lee-hong-sheng": "Lee Hong Sheng",
+        "narayanamurthy-sriram": "Narayanamurthy Sriram",
+        "toh-wei-jun": "Toh Wei Jun"
       },
       "headingKeywords": {}
     },
@@ -107,20 +106,19 @@
       "src": "UserGuide.md",
       "title": "User Guide",
       "headings": {
-        "ab-3-user-guide": "AB-3 User Guide",
+        "tutortrack-user-guide": "TutorTrack User Guide",
         "quick-start": "Quick start",
         "features": "Features",
         "viewing-help-help": "Viewing help: help",
-        "adding-a-person-add": "Adding a person: add",
-        "listing-all-persons-list": "Listing all persons: list",
-        "editing-a-person-edit": "Editing a person: edit",
-        "locating-persons-by-name-find": "Locating persons by name: find",
-        "deleting-a-person-delete": "Deleting a person: delete",
-        "clearing-all-entries-clear": "Clearing all entries: clear",
+        "adding-a-student-add": "Adding a student: add",
+        "listing-all-students-list": "Listing all students: list",
+        "editing-a-student-edit": "Editing a student: edit",
+        "locating-students-by-name-find": "Locating students by name: find",
+        "deleting-a-student-delete": "Deleting a student: delete",
+        "clearing-all-students-clear": "Clearing all students: clear",
         "exiting-the-program-exit": "Exiting the program: exit",
         "saving-the-data": "Saving the data",
         "editing-the-data-file": "Editing the data file",
-        "archiving-data-files-coming-in-v2-0": "Archiving data files [coming in v2.0]",
         "faq": "FAQ",
         "known-issues": "Known issues",
         "command-summary": "Command summary"
