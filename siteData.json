@@ -116,6 +116,7 @@
         "locating-students-by-name-find": "Locating students by name: find",
         "adding-or-replacing-a-student-note-note": "Adding or replacing a student note: note",
         "scheduling-a-student-s-next-lesson-nextlesson": "Scheduling a student's next lesson: nextlesson",
+        "clearing-a-student-s-next-lesson-clearlesson": "Clearing a student's next lesson: clearlesson",
         "deleting-a-student-delete": "Deleting a student: delete",
         "clearing-all-students-clear": "Clearing all students: clear",
         "exiting-the-program-exit": "Exiting the program: exit",
