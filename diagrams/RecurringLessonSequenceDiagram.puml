@@ -1,0 +1,91 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant "p:RecurringLessonCommandParser" as RecurringLessonCommandParser LOGIC_COLOR
+participant "c:RecurringLessonCommand" as RecurringLessonCommand LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+end box
+
+box Storage STORAGE_COLOR_T1
+participant ":Storage" as Storage STORAGE_COLOR
+end box
+
+[-> LogicManager : execute("recurringlesson 1\nday/MONDAY time/16:30 topic/Algebra")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand(commandText)
+activate AddressBookParser
+
+create RecurringLessonCommandParser
+AddressBookParser -> RecurringLessonCommandParser
+activate RecurringLessonCommandParser
+RecurringLessonCommandParser --> AddressBookParser
+deactivate RecurringLessonCommandParser
+
+AddressBookParser -> RecurringLessonCommandParser : parse(arguments)
+activate RecurringLessonCommandParser
+note over RecurringLessonCommandParser
+    Validates the index, prefixes,
+    day, time, and topic.
+end note
+
+create RecurringLessonCommand
+RecurringLessonCommandParser -> RecurringLessonCommand : <<create>>(index, recurringLesson)
+activate RecurringLessonCommand
+RecurringLessonCommand --> RecurringLessonCommandParser : c
+deactivate RecurringLessonCommand
+
+RecurringLessonCommandParser --> AddressBookParser : c
+deactivate RecurringLessonCommandParser
+destroy RecurringLessonCommandParser
+
+AddressBookParser --> LogicManager : c
+deactivate AddressBookParser
+
+LogicManager -> RecurringLessonCommand : execute(m)
+activate RecurringLessonCommand
+
+RecurringLessonCommand -> Model : getFilteredPersonList()
+activate Model
+Model --> RecurringLessonCommand : displayedStudents
+deactivate Model
+
+note over RecurringLessonCommand
+    Creates a replacement Person;
+    all other details are preserved.
+end note
+
+RecurringLessonCommand -> Model : setPerson(student, updatedStudent)
+activate Model
+Model --> RecurringLessonCommand
+deactivate Model
+
+RecurringLessonCommand -> Model : updateFilteredPersonList(\nPREDICATE_SHOW_ALL_PERSONS)
+activate Model
+Model --> RecurringLessonCommand
+deactivate Model
+
+RecurringLessonCommand --> LogicManager : result
+deactivate RecurringLessonCommand
+
+LogicManager -> Model : getAddressBook()
+activate Model
+Model --> LogicManager : addressBook
+deactivate Model
+
+LogicManager -> Storage : saveAddressBook(addressBook)
+activate Storage
+Storage --> LogicManager
+deactivate Storage
+
+[<-- LogicManager : result
+deactivate LogicManager
+
+@enduml

@@ -1,0 +1,95 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant "p:ClearRecurringLessonCommandParser" as ClearRecurringLessonCommandParser LOGIC_COLOR
+participant "c:ClearRecurringLessonCommand" as ClearRecurringLessonCommand LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+end box
+
+box Storage STORAGE_COLOR_T1
+participant ":Storage" as Storage STORAGE_COLOR
+end box
+
+[-> LogicManager : execute("clearrecurringlesson 1")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand(commandText)
+activate AddressBookParser
+
+create ClearRecurringLessonCommandParser
+AddressBookParser -> ClearRecurringLessonCommandParser
+activate ClearRecurringLessonCommandParser
+ClearRecurringLessonCommandParser --> AddressBookParser
+deactivate ClearRecurringLessonCommandParser
+
+AddressBookParser -> ClearRecurringLessonCommandParser : parse(arguments)
+activate ClearRecurringLessonCommandParser
+note over ClearRecurringLessonCommandParser
+    Parses the displayed index.
+end note
+
+create ClearRecurringLessonCommand
+ClearRecurringLessonCommandParser -> ClearRecurringLessonCommand : <<create>>(index)
+activate ClearRecurringLessonCommand
+ClearRecurringLessonCommand --> ClearRecurringLessonCommandParser : c
+deactivate ClearRecurringLessonCommand
+
+ClearRecurringLessonCommandParser --> AddressBookParser : c
+deactivate ClearRecurringLessonCommandParser
+destroy ClearRecurringLessonCommandParser
+
+AddressBookParser --> LogicManager : c
+deactivate AddressBookParser
+
+LogicManager -> ClearRecurringLessonCommand : execute(m)
+activate ClearRecurringLessonCommand
+
+ClearRecurringLessonCommand -> Model : getFilteredPersonList()
+activate Model
+Model --> ClearRecurringLessonCommand : displayedStudents
+deactivate Model
+
+alt student has a recurring lesson
+    note over ClearRecurringLessonCommand
+        Creates a replacement Person with
+        Optional.empty(); other fields remain.
+    end note
+    ClearRecurringLessonCommand -> Model : setPerson(student, updatedStudent)
+    activate Model
+    Model --> ClearRecurringLessonCommand
+    deactivate Model
+else no recurring lesson is scheduled
+    note over ClearRecurringLessonCommand
+        No Person is replaced.
+    end note
+end
+
+ClearRecurringLessonCommand -> Model : updateFilteredPersonList(\nPREDICATE_SHOW_ALL_PERSONS)
+activate Model
+Model --> ClearRecurringLessonCommand
+deactivate Model
+
+ClearRecurringLessonCommand --> LogicManager : result
+deactivate ClearRecurringLessonCommand
+
+LogicManager -> Model : getAddressBook()
+activate Model
+Model --> LogicManager : addressBook
+deactivate Model
+
+LogicManager -> Storage : saveAddressBook(addressBook)
+activate Storage
+Storage --> LogicManager
+deactivate Storage
+
+[<-- LogicManager : result
+deactivate LogicManager
+
+@enduml

@@ -1,0 +1,66 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+skinparam ActivityBackgroundColor LOGIC_COLOR_T1
+skinparam ActivityBorderColor LOGIC_COLOR
+skinparam ActivityDiamondBackgroundColor #FFFFFF
+skinparam ActivityDiamondBorderColor LOGIC_COLOR
+
+title Timetable-clash detection when scheduling a lesson
+
+start
+:Parse scheduling command and validate\nindex syntax, prefixes, timing, duration, and topic;
+if (Input valid?) then (yes)
+else (no)
+    :Report ParseException;\nleave student data and displayed list unchanged;
+    stop
+endif
+
+:Obtain the displayed student list;
+if (Index identifies a displayed student?) then (yes)
+else (no)
+    :Report invalid-index CommandException;\nleave student data and displayed list unchanged;
+    stop
+endif
+
+if (Command is nextlesson?) then (yes)
+    :Select proposed next lesson;\nexclude this student's old next lesson;
+else (recurringlesson)
+    :Select proposed recurring lesson;\nexclude this student's old recurring schedule;
+endif
+
+:Compare proposal against existing next lessons\nusing TimetableClashChecker;
+note right
+    Both checks use all student records,
+    including students hidden by find or filter.
+    For mixed next/recurring comparisons,
+    allow the same student's exact weekday
+    and start-time match as one occurrence.
+end note
+if (Overlaps an existing next lesson?) then (yes)
+    :Log rejection and report CommandException\nwith conflicting student, date, time, and duration;\nleave student data and displayed list unchanged;
+    stop
+else (no)
+endif
+
+:Compare proposal against recurring schedules\nusing TimetableClashChecker;
+note right
+    Use actual durations and allow adjacent lessons.
+    Weekly comparisons handle midnight and
+    Sunday-to-Monday crossings.
+    Apply the same-student occurrence exception
+    when comparing a next lesson to a weekly rule.
+end note
+if (Overlaps a recurring lesson?) then (yes)
+    :Log rejection and report CommandException\nwith conflicting student, weekday, time, and duration;\nleave student data and displayed list unchanged;
+    stop
+else (no)
+endif
+
+:Create replacement Person with the proposed lesson\nand preserve all other student details;
+:Update model using Model.setPerson;
+:Reset the displayed list to show all students;
+:Return a successful CommandResult to LogicManager;
+stop
+
+@enduml
