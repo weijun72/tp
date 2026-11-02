@@ -17,7 +17,7 @@ box Storage STORAGE_COLOR_T1
 participant ":Storage" as Storage STORAGE_COLOR
 end box
 
-[-> LogicManager : execute("recurringlesson 1\nday/MONDAY time/16:30 topic/Algebra")
+[-> LogicManager : execute("recurringlesson 1\nday/MONDAY time/16:30 dur/60 topic/Algebra")
 activate LogicManager
 
 LogicManager -> AddressBookParser : parseCommand(commandText)
@@ -33,7 +33,7 @@ AddressBookParser -> RecurringLessonCommandParser : parse(arguments)
 activate RecurringLessonCommandParser
 note over RecurringLessonCommandParser
     Validates the index, prefixes,
-    day, time, and topic.
+    day, time, duration, and topic.
 end note
 
 create RecurringLessonCommand
@@ -58,6 +58,19 @@ Model --> RecurringLessonCommand : displayedStudents
 deactivate Model
 
 note over RecurringLessonCommand
+    Validates the displayed index.
+end note
+
+RecurringLessonCommand -> Model : getAddressBook()
+activate Model
+Model --> RecurringLessonCommand : addressBook
+deactivate Model
+
+note over RecurringLessonCommand
+    Uses TimetableClashChecker to check
+    next lessons, then recurring schedules,
+    for all students using lesson durations.
+    This successful path has no clashes.
     Creates a replacement Person;
     all other details are preserved.
 end note

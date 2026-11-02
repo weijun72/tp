@@ -1,0 +1,79 @@
+@startuml
+!include style.puml
+
+title Lesson priority and ordering
+
+' Reuse the shared palette; distinguish class headers from their members.
+skinparam titleFontName Arial
+skinparam titleFontSize 20
+skinparam titleFontColor #263144
+skinparam arrowThickness 1.1
+skinparam arrowColor #555555
+skinparam arrowFontColor #444444
+skinparam ArrowFontStyle plain
+skinparam linetype ortho
+skinparam nodesep 55
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam classAttributeFontColor #263144
+skinparam classAttributeFontSize 14
+skinparam classBackgroundColor #FFFFFF
+skinparam classHeaderBackgroundColor<<logic>> LOGIC_COLOR
+skinparam classBorderColor<<logic>> LOGIC_COLOR
+skinparam classHeaderBackgroundColor<<model>> MODEL_COLOR
+skinparam classBorderColor<<model>> MODEL_COLOR
+skinparam packageBorderColor<<logic>> LOGIC_COLOR
+skinparam packageBorderColor<<model>> MODEL_COLOR
+skinparam packageFontColor<<logic>> LOGIC_COLOR
+skinparam packageFontColor<<model>> MODEL_COLOR
+hide stereotype
+
+package "Logic" as LogicComponent <<logic>> {
+    class SortCommand <<logic>> {
+        + execute(model)
+    }
+    class UpcomingCommand <<logic>> {
+        + execute(model)
+    }
+}
+
+package "Model" as ModelComponent <<model>> {
+    class "<<interface>>\nModel" as Model <<model>> {
+        + sortPersons(comparator)
+        + getAddressBook()
+        + updateFilteredPersonList(predicate)
+    }
+    class ModelManager <<model>>
+    class Person <<model>> {
+        {static} + COMPARATOR_BY_NEXT_LESSON
+        + getNextLesson() : Optional<NextLesson>
+        + getRecurringLesson() : Optional<RecurringLesson>
+    }
+    class NextLesson <<model>> {
+        + getDateTime() : LocalDateTime
+    }
+    class RecurringLesson <<model>> {
+        + getNextOccurrence(now) : LocalDateTime
+    }
+}
+
+show SortCommand methods
+show UpcomingCommand methods
+show Model methods
+show Person members
+show NextLesson methods
+show RecurringLesson methods
+
+SortCommand ..> Model : uses
+UpcomingCommand ..> Model : uses
+ModelManager -up-|> Model
+ModelManager -right-> "*" Person : filteredPersons
+Person -down-> "0..1" NextLesson : nextLesson
+Person -down-> "0..1" RecurringLesson : recurringLesson
+SortCommand .[norank].> Person : uses comparator
+UpcomingCommand .[norank].> Person : reads lesson starts
+
+' Layout-only constraints keep the two commands aligned above the model.
+SortCommand -[hidden]right-> UpcomingCommand
+Model -[hidden]down-> Person
+@enduml

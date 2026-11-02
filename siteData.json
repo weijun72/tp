@@ -39,7 +39,7 @@
       "src": "DeveloperGuide.md",
       "title": "Developer Guide",
       "headings": {
-        "ab-3-developer-guide": "AB-3 Developer Guide",
+        "tutortrack-developer-guide": "TutorTrack Developer Guide",
         "acknowledgements": "Acknowledgements",
         "setting-up-getting-started": "Setting up, getting started",
         "design": "Design",
@@ -50,10 +50,12 @@
         "storage-component": "Storage component",
         "common-classes": "Common classes",
         "implementation": "Implementation",
+        "student-summary-and-detail-view": "Student summary and detail view",
+        "lesson-priority-and-ordering": "Lesson priority and ordering",
+        "upcoming-lesson-selection": "Upcoming lesson selection",
         "timetable-clash-detection": "Timetable-clash detection",
         "recurring-lesson-feature": "Recurring lesson feature",
         "proposed-undo-redo-feature": "[Proposed] Undo/redo feature",
-        "proposed-data-archiving": "[Proposed] Data archiving",
         "documentation-logging-testing-dev-ops": "Documentation, logging, testing, dev-ops",
         "appendix-requirements": "Appendix: Requirements",
         "product-scope": "Product scope",
@@ -63,7 +65,8 @@
         "glossary": "Glossary",
         "appendix-instructions-for-manual-testing": "Appendix: Instructions for manual testing",
         "launch-and-shutdown": "Launch and shutdown",
-        "deleting-a-person": "Deleting a person",
+        "walkthrough-of-all-features": "Walkthrough of all features",
+        "deleting-a-student": "Deleting a student",
         "filtering-students": "Filtering students",
         "saving-data": "Saving data"
       },
@@ -115,6 +118,7 @@
         "viewing-help-help": "Viewing help: help",
         "adding-a-student-add": "Adding a student: add",
         "listing-all-students-list": "Listing all students: list",
+        "viewing-a-student-s-complete-record-view": "Viewing a student's complete record: view",
         "viewing-the-earliest-upcoming-lesson-upcoming": "Viewing the earliest upcoming lesson: upcoming",
         "sorting-students-by-next-lesson-sort": "Sorting students by next lesson: sort",
         "editing-a-student-edit": "Editing a student: edit",
@@ -140,7 +144,9 @@
       "src": "index.md",
       "title": "",
       "headings": {
-        "tutortrack": "TutorTrack"
+        "tutortrack": "TutorTrack",
+        "features": "Features",
+        "get-started": "Get started"
       },
       "headingKeywords": {}
     },
