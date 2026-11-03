@@ -41,6 +41,7 @@
       "headings": {
         "tutortrack-developer-guide": "TutorTrack Developer Guide",
         "acknowledgements": "Acknowledgements",
+        "ai-assistance": "AI assistance",
         "setting-up-getting-started": "Setting up, getting started",
         "design": "Design",
         "architecture": "Architecture",
@@ -68,7 +69,8 @@
         "walkthrough-of-all-features": "Walkthrough of all features",
         "deleting-a-student": "Deleting a student",
         "filtering-students": "Filtering students",
-        "saving-data": "Saving data"
+        "saving-data": "Saving data",
+        "appendix-planned-enhancements": "Appendix: Planned enhancements"
       },
       "headingKeywords": {}
     },
